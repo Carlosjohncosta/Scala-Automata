@@ -1,10 +1,7 @@
-package main
+ package main
 
-object Grid {
+class CGOL(val columns: Int, val rows: Int, main: Main) extends AutomataTraits {
   type CellGrid = List[List[Boolean]]
-  val columns: Int = 120
-  val rows: Int = 120
-
   def newGrid: CellGrid =
     List.fill[List[Boolean]](rows) {
       List.fill[Boolean](columns)(Math.floor(Math.random() * 4) == 0)
@@ -21,13 +18,6 @@ object Grid {
               prev + (if((rowOff == 0) && (columnOff == 0)) 0 else
                 if(grid(rowOff + xIndex)(columnOff + yIndex)) 1 else 0)
           }
-      }
-
-    def getRange(center: Int, max: Int): Range =
-      center match {
-        case 0 => 0 to 1
-        case x if x == max - 1 => -1 to 0
-        case _ => -1 to 1
       }
 
     grid.zipWithIndex map {
@@ -49,4 +39,16 @@ object Grid {
         }
     }
   }
+
+  def draw(grid: CellGrid): Unit = {
+    main.background(0)
+    grid.zipWithIndex foreach {
+      case(row, xIndex) =>
+        row.zipWithIndex foreach {
+          case(cell, yIndex) =>
+            if (cell) main.square(xIndex * main.cellSize, yIndex * main.cellSize, main.cellSize)
+        }
+    }
+  }
+
 }
